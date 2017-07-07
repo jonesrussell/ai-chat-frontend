@@ -17,7 +17,8 @@
       </div>
     </button>
   </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
+    <form (ngSubmit)="logMessage()">
+	    <ion-textarea onfocus="cordova.plugins.Keyboard.show();" class="item-input-inset text-input-lg" name="newmessage" placeholder="Message..."></ion-textarea>
+	    <button class="button button-md">Submit</button>
+    </form>
 </ion-content>
