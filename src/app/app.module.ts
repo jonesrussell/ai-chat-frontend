@@ -4,7 +4,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { MessagePage } from '../pages/message/message';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -27,7 +27,7 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     HomePage,
-    ListPage
+    MessagePage
   ],
   imports: [
     BrowserModule,
@@ -40,7 +40,7 @@ export const firebaseConfig = {
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage
+    MessagePage
   ],
   providers: [
     StatusBar,

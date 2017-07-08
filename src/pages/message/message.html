@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Chat</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item class="text" *ngFor="let message of messages | async">
+        {{message.body}}
+    </ion-item>
+  </ion-list>
+    <form [formGroup]="chatForm" (ngSubmit)="logMessage(chatForm.value)">
+	    <ion-textarea class="item-input-inset" formControlName="messageInput" placeholder="Message..."></ion-textarea>
+	    <button class="button button-md">Submit</button>
+    </form>
+</ion-content>
