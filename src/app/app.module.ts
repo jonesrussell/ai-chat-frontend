@@ -4,6 +4,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
+import { SignupPage } from '../pages/signup/signup';
 import { MessagePage } from '../pages/message/message';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -28,6 +29,7 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     LoginPage,
+    SignupPage,
     MessagePage
   ],
   imports: [
@@ -42,6 +44,7 @@ export const firebaseConfig = {
   entryComponents: [
     MyApp,
     LoginPage,
+    SignupPage,
     MessagePage
   ],
   providers: [

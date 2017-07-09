@@ -4,7 +4,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { LoginPage } from '../pages/login/login';
+//import { SignupPage } from '../pages/signup/signup';
 import { MessagePage } from '../pages/message/message';
+
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,12 +19,22 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, private _auth: AngularFireAuth, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+	this._auth.authState.subscribe(auth => {
+		if (!auth) {
+			this.rootPage = LoginPage;
+		}
+		else {
+			this.rootPage = MessagePage;
+		}
+	});
+
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Login', component: LoginPage },
+    //      { title: 'Signup', component: SignupPage },
       { title: 'Bot', component: MessagePage }
     ];
 
