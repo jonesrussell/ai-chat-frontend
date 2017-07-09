@@ -32,6 +32,11 @@ export class MessagePage {
 		this._queryAI(form.messageInput);
 	}
 
+	public messageTapped(event, message) {
+		console.log(message);
+		this._queryAI(message.body);
+	}
+
 	private _queryAI(message) {
 		let link = 'http://192.168.2.238:3000/messages';
 		let payload = JSON.stringify({ message: message });
