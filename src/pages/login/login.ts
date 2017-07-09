@@ -4,6 +4,7 @@ import { SignupPage } from '../signup/signup';
 import { Facebook } from '@ionic-native/facebook';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { ShareService } from '../../services/share';
 
 @Component({
   selector: 'page-login',
@@ -20,7 +21,8 @@ export class LoginPage {
 		private _FB: Facebook,
 		private _platform: Platform,
 		private _auth: AngularFireAuth,
-		private _toast: ToastController) {
+		private _toast: ToastController,
+		private _share: ShareService) {
 		_auth.authState.subscribe(user => {
 			if (!user) {
 				return;
@@ -31,7 +33,7 @@ export class LoginPage {
 	login() {
 		this._auth.auth.signInWithEmailAndPassword(this.loginData.email, this.loginData.password)
 			.then(auth => {
-				// Do custom things with auth
+				this._share.setUID(this._auth.auth.currentUser.uid);
 			})
 			.catch(err => {
 				// Handle error
@@ -62,6 +64,7 @@ export class LoginPage {
 	}
 
 	signOut() {
+		this._share.uid = '';
 		this._auth.auth.signOut();
 	}
 

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import * as fb from 'firebase/app';
 import { Http, Headers } from '@angular/http';
+import { ShareService } from '../../services/share';
 
 @Component({
   selector: 'page-message',
@@ -12,15 +13,17 @@ import { Http, Headers } from '@angular/http';
 export class MessagePage {
 	chatForm: FormGroup;
 	messages: FirebaseListObservable<any[]>;
-	answer;
+	answer: string;
+	uid: string;
 
 	constructor(
 		public navCtrl: NavController,
 		public db: AngularFireDatabase,
 		private _FB: FormBuilder,
-		private _http: Http) {
-			this.answer;
-			this.messages = db.list('/messages',
+		private _http: Http,
+		private _share: ShareService) {
+			this.uid = _share.getUID();
+			this.messages = db.list('/messages/' + this.uid,
 				{ 
 					query: { limitToLast: 5 } 
 				}
@@ -29,11 +32,15 @@ export class MessagePage {
 		}
 
 	public logMessage(form) {
-		let messageRef = fb.database().ref('/messages').push();
-		messageRef.set({ body: form.messageInput });
-		this.chatForm.reset();
+		let message = form.messageInput;
+		this._messageToDB(message);
+		this._queryAI(message);
+	}
 
-		this._queryAI(form.messageInput);
+	private _messageToDB(message) {
+		let messageRef = fb.database().ref('/messages/' + this.uid).push();
+		messageRef.set({ body: message });
+		this.chatForm.reset();
 	}
 
 	public messageTapped(event, message) {
@@ -52,5 +59,12 @@ export class MessagePage {
 				console.log("http error in queryAI");
 			});
 	}
+
+	ionViewCanEnter(): boolean {
+		if (this.uid != '') {
+			return true;
+		}
+		return false;
+ 	}
 
 }

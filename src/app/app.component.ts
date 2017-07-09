@@ -2,42 +2,45 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { ShareService } from '../services/share';
 import { LoginPage } from '../pages/login/login';
-//import { SignupPage } from '../pages/signup/signup';
 import { MessagePage } from '../pages/message/message';
-
 import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
-  templateUrl: 'app.html'
+	templateUrl: 'app.html',
+	providers: [ShareService]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = MessagePage;
+  rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, private _auth: AngularFireAuth, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-	this._auth.authState.subscribe(auth => {
-		if (!auth) {
-			this.rootPage = LoginPage;
-		}
-		else {
-			this.rootPage = MessagePage;
-		}
-	});
+	constructor(
+		public platform: Platform,
+		public statusBar: StatusBar,
+		public splashScreen: SplashScreen,
+		private _auth: AngularFireAuth,
+		private _share: ShareService) {
+			this._auth.authState.subscribe(auth => {
+				if (!auth) {
+					this.rootPage = LoginPage;
+				}
+				else {
+					this.rootPage = MessagePage;
+					_share.setUID(this._auth.auth.currentUser.uid);
+				}
+			});
 
-    this.initializeApp();
+		this.initializeApp();
 
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Login', component: LoginPage },
-    //      { title: 'Signup', component: SignupPage },
-      { title: 'Bot', component: MessagePage }
-    ];
-
+		// used for an example of ngFor and navigation
+		this.pages = [
+			{ title: 'Login', component: LoginPage },
+			{ title: 'Bot', component: MessagePage }
+		];
   }
 
   initializeApp() {
