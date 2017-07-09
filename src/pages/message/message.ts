@@ -14,15 +14,19 @@ export class MessagePage {
 	messages: FirebaseListObservable<any[]>;
 	answer;
 
-	constructor(public navCtrl: NavController, public db: AngularFireDatabase, private _FB: FormBuilder, private _http: Http) {
-		this.answer;
-		this.messages = db.list('/messages',
-			{ 
-				query: { limitToLast: 5 } 
-			}
-		);
-		this.chatForm = _FB.group({ messageInput: [''] })
-	}
+	constructor(
+		public navCtrl: NavController,
+		public db: AngularFireDatabase,
+		private _FB: FormBuilder,
+		private _http: Http) {
+			this.answer;
+			this.messages = db.list('/messages',
+				{ 
+					query: { limitToLast: 5 } 
+				}
+			);
+			this.chatForm = _FB.group({ messageInput: [''] })
+		}
 
 	public logMessage(form) {
 		let messageRef = fb.database().ref('/messages').push();
@@ -33,7 +37,6 @@ export class MessagePage {
 	}
 
 	public messageTapped(event, message) {
-		console.log(message);
 		this._queryAI(message.body);
 	}
 
@@ -45,7 +48,6 @@ export class MessagePage {
 		this._http.post(link, payload, { headers: headers })
 			.subscribe(data => {
 				this.answer = JSON.parse(data["_body"]).text;
-				console.log(this.answer);
 			}, error => {
 				console.log("http error in queryAI");
 			});
