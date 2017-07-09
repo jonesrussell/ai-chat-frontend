@@ -12,7 +12,7 @@ import { MessagePage } from '../pages/message/message';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = MessagePage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -22,7 +22,7 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'Message', component: MessagePage }
+      { title: 'Bot', component: MessagePage }
     ];
 
   }

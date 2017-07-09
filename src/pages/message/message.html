@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Chat</ion-title>
+    <ion-title>Bot</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -14,11 +14,18 @@
     </ion-item>
   </ion-list>
     <form [formGroup]="chatForm" (ngSubmit)="logMessage(chatForm.value)">
-	    <ion-textarea class="item-input-inset" formControlName="messageInput" placeholder="Message..."></ion-textarea>
-	    <button class="button button-md">Submit</button>
+	    <ion-grid>
+		<ion-row>
+			<ion-col col-10>
+			    <ion-textarea class="item-input-inset" formControlName="messageInput" placeholder="Message..."></ion-textarea>
+			</ion-col>
+    			<ion-col col-2>
+			    <button class="button button-md"><ion-icon name="send"></ion-icon></button>
+			</ion-col>
+	  </ion-row>
+	</ion-grid>
     </form>
-    
-    <div>
-	{{answer}}
-    </div>
+    <ion-card>
+	    <ion-card-header>{{answer}}</ion-card-header>
+    </ion-card>
 </ion-content>
