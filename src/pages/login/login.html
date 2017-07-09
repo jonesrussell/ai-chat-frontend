@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>E-Mail</ion-label>
+      <ion-input type="email" [(ngModel)]="loginData.email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button full ion-button (click)="login()" [disabled]="!loginData.email || !loginData.password">Login</button>
+  <a href="#" (click)="signup()">Signup for an Account</a>
+  <br>
+  <button ion-button outline (click)="signInWithFacebook()">Facebook</button>
+  <br>
+  <button ion-button outline (click)="signOut()">Logout</button>
+</ion-content>
