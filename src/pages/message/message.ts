@@ -12,9 +12,10 @@ import { Http, Headers } from '@angular/http';
 export class MessagePage {
 	chatForm: FormGroup;
 	messages: FirebaseListObservable<any[]>;
-	data:any = {};
+	answer;
 
 	constructor(public navCtrl: NavController, public db: AngularFireDatabase, private _FB: FormBuilder, private _http: Http) {
+		this.answer;
 		this.messages = db.list('/messages',
 			{ 
 				query: { limitToLast: 5 } 
@@ -38,8 +39,8 @@ export class MessagePage {
 
 		this._http.post(link, payload, { headers: headers })
 			.subscribe(data => {
-				this.data.response = data["_body"];
-				console.log(this.data);
+				this.answer = JSON.parse(data["_body"]).text;
+				console.log(this.answer);
 			}, error => {
 				console.log("http error in queryAI");
 			});
