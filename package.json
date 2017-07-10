@@ -61,5 +61,8 @@
                 "APP_NAME": "AI Chat Test"
             }
         }
+    },
+    "config": {
+      "ionic_webpack": "./webpack.config.js"
     }
 }

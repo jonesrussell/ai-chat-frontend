@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { EnvironmentsModule } from '../../environment-variables/environment-variables.module';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
@@ -39,7 +40,8 @@ export const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    HttpModule
+    HttpModule,
+    EnvironmentsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

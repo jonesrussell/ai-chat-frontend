@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import * as fb from 'firebase/app';
 import { Http, Headers } from '@angular/http';
 import { ShareService } from '../../services/share';
+import { EnvVariables } from '../../../environment-variables/environment-variables.token';
 
 @Component({
   selector: 'page-message',
@@ -21,7 +22,8 @@ export class MessagePage {
 		public db: AngularFireDatabase,
 		private _FB: FormBuilder,
 		private _http: Http,
-		private _share: ShareService) {
+		private _share: ShareService,
+		@Inject(EnvVariables) private _env) {
 			this.uid = _share.getUID();
 			this.messages = db.list('/messages/' + this.uid,
 				{ 
@@ -48,11 +50,11 @@ export class MessagePage {
 	}
 
 	private _queryAI(message) {
-		let link = 'http://192.168.2.238:3000/messages';
+		let endpoint = this._env.aiEndpoint + '/messages';
 		let payload = JSON.stringify({ message: message });
 		let headers = new Headers({ 'Content-Type': 'application/json' });
 
-		this._http.post(link, payload, { headers: headers })
+		this._http.post(endpoint, payload, { headers: headers })
 			.subscribe(data => {
 				this.answer = JSON.parse(data["_body"]).text;
 			}, error => {
