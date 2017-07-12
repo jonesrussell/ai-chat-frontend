@@ -8,6 +8,7 @@ import { ShareService } from '../../services/share';
 import { EnvVariables } from '../../../environment-variables/environment-variables.token';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import {  NgZone } from '@angular/core';
+import {TextToSpeech} from '@ionic-native/text-to-speech';
 
 @Component({
   selector: 'page-message',
@@ -29,7 +30,8 @@ export class MessagePage {
 		private _share: ShareService,
 		@Inject(EnvVariables) private _env,
 		public speech: SpeechRecognition,
-		private zone: NgZone) {
+		private zone: NgZone,
+		private _tts: TextToSpeech) {
 			this.uid = _share.getUID();
 			this.messages = db.list('/messages/' + this.uid,
 				{ 
@@ -63,6 +65,7 @@ export class MessagePage {
 		this._http.post(endpoint, payload, { headers: headers })
 			.subscribe(data => {
 				this.answer = JSON.parse(data["_body"]).text;
+				this.sayText();
 			}, error => {
 				console.log("http error in queryAI");
 			});
@@ -121,4 +124,14 @@ export class MessagePage {
 		console.log('listening mode is now : ' + this.isListening);
 	}
 
+	async sayText():Promise<any> {
+		console.debug('===================================');
+		try{
+			await this._tts.speak(this.answer);
+		}
+		catch(e){
+			console.debug(e);
+		}
+		console.debug('===================================');
+  	}
 }

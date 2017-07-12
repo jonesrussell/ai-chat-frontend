@@ -2,15 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { EnvironmentsModule } from '../../environment-variables/environment-variables.module';
-
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { MessagePage } from '../pages/message/message';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -18,6 +15,7 @@ import { Facebook } from '@ionic-native/facebook';
 import { HttpModule } from '@angular/http';
 import { ShareService } from '../services/share';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
+import { TextToSpeech } from '@ionic-native/text-to-speech' 
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBbA4W3GmHNeW4p-2n0rxEeU8EUFC-fQL0",
@@ -57,7 +55,8 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Facebook,
     ShareService,
-    SpeechRecognition
+    SpeechRecognition,
+    TextToSpeech
   ]
 })
 export class AppModule {}
