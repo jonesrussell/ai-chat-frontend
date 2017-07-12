@@ -17,6 +17,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { Facebook } from '@ionic-native/facebook';
 import { HttpModule } from '@angular/http';
 import { ShareService } from '../services/share';
+import { SpeechRecognition } from '@ionic-native/speech-recognition';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBbA4W3GmHNeW4p-2n0rxEeU8EUFC-fQL0",
@@ -55,7 +56,8 @@ export const firebaseConfig = {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Facebook,
-    ShareService
+    ShareService,
+    SpeechRecognition
   ]
 })
 export class AppModule {}
