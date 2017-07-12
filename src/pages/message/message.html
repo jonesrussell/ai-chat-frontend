@@ -28,7 +28,6 @@
     <ion-card>
 	    <ion-card-header>{{answer}}</ion-card-header>
     </ion-card>
-    <p>Is listening ? : {{ isListening }}</p>
     <button ion-button (click)="getPermission()">Get Permission</button>
     <button ion-button (click)="listen()">
       <div>
@@ -38,9 +37,4 @@
       </div>
     </button>
 
-  <ion-card>
-    <ion-card-content *ngFor="let match of matches">
-      <p>{{ match }}</p>
-    </ion-card-content>
-  </ion-card>
 </ion-content>

@@ -78,7 +78,6 @@ export class MessagePage {
 	async hasPermission():Promise<boolean> {
 		try {
 			const permission = await this.speech.hasPermission();
-			console.log(permission);
 
 			return permission;
 		} catch(e) {
@@ -109,13 +108,8 @@ export class MessagePage {
 		this.speech.startListening()
 		.subscribe(matches => {
 			_this.zone.run(() => {
-				console.debug('=================');
-				console.debug(matches[0]);
-				console.debug(_this.chatForm.get('messageInput').value);
 				_this.chatForm.setValue({ messageInput: matches[0] });
 				_this.logMessage({ messageInput: matches[0] });
-				console.debug('=================');
-
 				_this.matches = matches;
 			})
 		}, error => console.error(error));
