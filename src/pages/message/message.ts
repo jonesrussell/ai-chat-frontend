@@ -6,6 +6,8 @@ import * as fb from 'firebase/app';
 import { Http, Headers } from '@angular/http';
 import { ShareService } from '../../services/share';
 import { EnvVariables } from '../../../environment-variables/environment-variables.token';
+import { SpeechRecognition } from '@ionic-native/speech-recognition';
+import {  NgZone } from '@angular/core';
 
 @Component({
   selector: 'page-message',
@@ -16,6 +18,8 @@ export class MessagePage {
 	messages: FirebaseListObservable<any[]>;
 	answer: string;
 	uid: string;
+	isListening: boolean = false;
+	matches: Array<String>;
 
 	constructor(
 		public navCtrl: NavController,
@@ -23,15 +27,17 @@ export class MessagePage {
 		private _FB: FormBuilder,
 		private _http: Http,
 		private _share: ShareService,
-		@Inject(EnvVariables) private _env) {
+		@Inject(EnvVariables) private _env,
+		public speech: SpeechRecognition,
+		private zone: NgZone) {
 			this.uid = _share.getUID();
 			this.messages = db.list('/messages/' + this.uid,
 				{ 
 					query: { limitToLast: 5 } 
 				}
 			);
-			this.chatForm = _FB.group({ messageInput: [''] })
-		}
+		this.chatForm = _FB.group({ messageInput: [''] })
+	}
 
 	public logMessage(form) {
 		let message = form.messageInput;
@@ -67,6 +73,50 @@ export class MessagePage {
 			return true;
 		}
 		return false;
- 	}
+	}
+
+	async hasPermission():Promise<boolean> {
+		try {
+			const permission = await this.speech.hasPermission();
+			console.log(permission);
+
+			return permission;
+		} catch(e) {
+			console.log(e);
+		}
+	}
+
+	async getPermission():Promise<void> {
+		try {
+			this.speech.requestPermission();
+		} catch(e) {
+			console.log(e);
+		}
+	}
+
+	listen(): void {
+		console.log('listen action triggered');
+		if (this.isListening) {
+			this.speech.stopListening();
+			this.toggleListenMode();
+			return;
+		}
+
+		this.toggleListenMode();
+		let _this = this;
+
+		this.speech.startListening()
+		.subscribe(matches => {
+			_this.zone.run(() => {
+				_this.matches = matches;
+			})
+		}, error => console.error(error));
+
+	}
+
+	toggleListenMode():void {
+		this.isListening = this.isListening ? false : true;
+		console.log('listening mode is now : ' + this.isListening);
+	}
 
 }
