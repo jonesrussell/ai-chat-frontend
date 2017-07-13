@@ -38,7 +38,7 @@ export class MessagePage {
 					query: { limitToLast: 5 } 
 				}
 			);
-		this.chatForm = _FB.group({ messageInput: [''] })
+			this.chatForm = _FB.group({ messageInput: [''] });
 	}
 
 	public logMessage(form) {
@@ -80,43 +80,58 @@ export class MessagePage {
 
 	async hasPermission():Promise<boolean> {
 		try {
-			const permission = await this.speech.hasPermission();
-
+			let permission = await this.speech.hasPermission();
+			console.log('hasPermission()?: ' + permission);
 			return permission;
-		} catch(e) {
+		}
+		catch(e) {
 			console.log(e);
 		}
 	}
 
 	async getPermission():Promise<void> {
 		try {
-			this.speech.requestPermission();
-		} catch(e) {
-			console.log(e);
+			return await this.speech.requestPermission();
+		}
+		catch(e) {
+			console.debug(e);
 		}
 	}
 
-	listen(): void {
-		console.debug('listen action triggered');
-		console.log('listen action triggered');
-		if (this.isListening) {
-			this.speech.stopListening();
-			this.toggleListenMode();
-			return;
-		}
+	public listen(): void {
+		console.log('============================');
+		console.log('=== listen action triggered ===');
+		let __this = this;
+		this.hasPermission().then((permission) => {
+			console.log('permission: ' + permission);
+			if (!permission) {
+				__this.getPermission().then((result) => {
+					console.log('Got permission?: ' + result);
+					__this.listen();
+				});
+			}
+			else {
+				if (__this.isListening) {
+					__this.speech.stopListening();
+					__this.toggleListenMode();
+					return;
+				}
 
-		this.toggleListenMode();
-		let _this = this;
+				__this.toggleListenMode();
+				let ___this = __this;
 
-		this.speech.startListening()
-		.subscribe(matches => {
-			_this.zone.run(() => {
-				_this.chatForm.setValue({ messageInput: matches[0] });
-				_this.logMessage({ messageInput: matches[0] });
-				_this.matches = matches;
-			})
-		}, error => console.error(error));
-
+				this.speech.startListening()
+					.subscribe(matches => {
+						___this.zone.run(() => {
+							___this.chatForm.setValue({ messageInput: matches[0] });
+							___this.logMessage({ messageInput: matches[0] });
+							___this.matches = matches;
+						})
+					}, error => console.error(error))
+				;
+			}
+		}); 
+		console.log('=======================================================');
 	}
 
 	toggleListenMode():void {
@@ -125,13 +140,11 @@ export class MessagePage {
 	}
 
 	async sayText():Promise<any> {
-		console.debug('===================================');
 		try{
 			await this._tts.speak(this.answer);
 		}
 		catch(e){
 			console.debug(e);
 		}
-		console.debug('===================================');
   	}
 }
