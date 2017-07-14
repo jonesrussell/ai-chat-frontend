@@ -19,7 +19,6 @@ export class MessagePage {
 	messages: FirebaseListObservable<any[]>;
 	answer: string;
 	uid: string;
-	isListening: boolean = false;
 	matches: Array<String>;
 
 	constructor(
@@ -38,7 +37,7 @@ export class MessagePage {
 					query: { limitToLast: 5 } 
 				}
 			);
-		this.chatForm = _FB.group({ messageInput: [''] })
+			this.chatForm = _FB.group({ messageInput: [''] });
 	}
 
 	public logMessage(form) {
@@ -80,58 +79,61 @@ export class MessagePage {
 
 	async hasPermission():Promise<boolean> {
 		try {
-			const permission = await this.speech.hasPermission();
-
+			let permission = await this.speech.hasPermission();
+			console.log('hasPermission()?: ' + permission);
 			return permission;
-		} catch(e) {
+		}
+		catch(e) {
 			console.log(e);
 		}
 	}
 
-	async getPermission():Promise<void> {
+	async getPermission():Promise<boolean> {
 		try {
-			this.speech.requestPermission();
-		} catch(e) {
-			console.log(e);
+			return await this.speech.requestPermission().then(
+					() => { console.log('Granted'); return true; },
+					() => { console.log('Denied'); return false; }
+				);
+
+		}
+		catch(e) {
+			console.debug(e);
 		}
 	}
 
-	listen(): void {
-		console.debug('listen action triggered');
-		console.log('listen action triggered');
-		if (this.isListening) {
-			this.speech.stopListening();
-			this.toggleListenMode();
-			return;
-		}
-
-		this.toggleListenMode();
-		let _this = this;
-
-		this.speech.startListening()
-		.subscribe(matches => {
-			_this.zone.run(() => {
-				_this.chatForm.setValue({ messageInput: matches[0] });
-				_this.logMessage({ messageInput: matches[0] });
-				_this.matches = matches;
-			})
-		}, error => console.error(error));
-
-	}
-
-	toggleListenMode():void {
-		this.isListening = this.isListening ? false : true;
-		console.log('listening mode is now : ' + this.isListening);
+	public listen(): void {
+		let __this = this;
+		this.hasPermission().then((hasPermission: boolean) => {
+			if (!hasPermission) {
+				__this.getPermission().then(
+					(permission) => {
+						console.log(permission);
+						if (permission) {
+							__this.listen();
+						}
+					}
+				);
+			}
+			else {
+				this.speech.startListening()
+					.subscribe(matches => {
+						__this.zone.run(() => {
+							__this.chatForm.setValue({ messageInput: matches[0] });
+							__this.logMessage({ messageInput: matches[0] });
+							__this.matches = matches;
+						})
+					}, error => console.error(error))
+				;
+			}
+		}); 
 	}
 
 	async sayText():Promise<any> {
-		console.debug('===================================');
 		try{
 			await this._tts.speak(this.answer);
 		}
 		catch(e){
 			console.debug(e);
 		}
-		console.debug('===================================');
   	}
 }
