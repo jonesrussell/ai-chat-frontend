@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding text-center>
   <ion-list>
     <ion-item>
       <ion-label floating>E-Mail</ion-label>
@@ -19,9 +19,14 @@
     </ion-item>
   </ion-list>
   <button full ion-button (click)="login()" [disabled]="!loginData.email || !loginData.password">Login</button>
+  <br>
   <a href="#" (click)="signup()">Signup for an Account</a>
-  <br>
-  <button ion-button outline (click)="signInWithFacebook()">Facebook</button>
-  <br>
+  <br><br>
+  <button ion-button outline (click)="signInWithFacebook()">
+	  <ion-icon name="logo-facebook"></ion-icon>
+	  &nbsp;
+	  Login with Facebook
+  </button>
+  <br><br>
   <button ion-button outline (click)="signOut()">Logout</button>
 </ion-content>
