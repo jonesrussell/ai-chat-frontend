@@ -1,4 +1,13 @@
 page-message {
+	.item-md {
+		padding-left: 0;
+	}
 
+	.item-inner {
+		padding-left: 16px;
+	}
+
+	 .list-md > .item-block:last-child .item-inner {
+		border-bottom: 1px solid #dedede;
+	 }
 }
-
