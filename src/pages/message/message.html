@@ -19,21 +19,31 @@
 			<ion-col col-8>
 			    <ion-textarea class="item-input-inset" formControlName="messageInput" placeholder="Message..."></ion-textarea>
 			</ion-col>
-    			<ion-col col-4>
-		          <button ion-button (click)="listen()">
-			  	<div>
+   			<ion-col col-4>
+	          <button ion-button (click)="listen()">
+				<div>
 					<ion-icon name="mic"></ion-icon>
 				</div>
-    			  </button>
-
+	   		  </button>
 			    <button ion-button><ion-icon name="send"></ion-icon></button>
 			</ion-col>
 		</ion-row>
 	</ion-grid>
     </form>
-    <button ion-button (click)="getPermission()">Get Mic Permission</button>
-    <ion-card>
-	    <ion-card-header>{{answer}}</ion-card-header>
-    </ion-card>
-    <button color="secondary" ion-button (click)="sayText()">Read Text</button>
+	<ion-grid>
+		<ion-row>
+			<ion-col col-10>
+				<ion-card>
+					<ion-card-header>
+						<span text-left>{{answer}}</span>
+					</ion-card-header>
+				</ion-card>
+			</ion-col>
+			<ion-col col-2>
+				<button color="secondary" ion-button (click)="sayText()" text-right>
+					<ion-icon name="megaphone"></ion-icon>
+				</button>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
 </ion-content>
