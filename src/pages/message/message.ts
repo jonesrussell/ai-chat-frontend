@@ -19,7 +19,6 @@ export class MessagePage {
 	messages: FirebaseListObservable<any[]>;
 	answer: string;
 	uid: string;
-	isListening: boolean = false;
 	matches: Array<String>;
 
 	constructor(
@@ -89,9 +88,13 @@ export class MessagePage {
 		}
 	}
 
-	async getPermission():Promise<void> {
+	async getPermission():Promise<boolean> {
 		try {
-			return await this.speech.requestPermission();
+			return await this.speech.requestPermission().then(
+					() => { console.log('Granted'); return true; },
+					() => { console.log('Denied'); return false; }
+				);
+
 		}
 		catch(e) {
 			console.debug(e);
@@ -99,44 +102,30 @@ export class MessagePage {
 	}
 
 	public listen(): void {
-		console.log('============================');
-		console.log('=== listen action triggered ===');
 		let __this = this;
-		this.hasPermission().then((permission) => {
-			console.log('permission: ' + permission);
-			if (!permission) {
-				__this.getPermission().then((result) => {
-					console.log('Got permission?: ' + result);
-					__this.listen();
-				});
+		this.hasPermission().then((hasPermission: boolean) => {
+			if (!hasPermission) {
+				__this.getPermission().then(
+					(permission) => {
+						console.log(permission);
+						if (permission) {
+							__this.listen();
+						}
+					}
+				);
 			}
 			else {
-				if (__this.isListening) {
-					__this.speech.stopListening();
-					__this.toggleListenMode();
-					return;
-				}
-
-				__this.toggleListenMode();
-				let ___this = __this;
-
 				this.speech.startListening()
 					.subscribe(matches => {
-						___this.zone.run(() => {
-							___this.chatForm.setValue({ messageInput: matches[0] });
-							___this.logMessage({ messageInput: matches[0] });
-							___this.matches = matches;
+						__this.zone.run(() => {
+							__this.chatForm.setValue({ messageInput: matches[0] });
+							__this.logMessage({ messageInput: matches[0] });
+							__this.matches = matches;
 						})
 					}, error => console.error(error))
 				;
 			}
 		}); 
-		console.log('=======================================================');
-	}
-
-	toggleListenMode():void {
-		this.isListening = this.isListening ? false : true;
-		console.log('listening mode is now : ' + this.isListening);
 	}
 
 	async sayText():Promise<any> {
