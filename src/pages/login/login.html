@@ -18,7 +18,13 @@
       <ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
     </ion-item>
   </ion-list>
-  <button full ion-button (click)="login()" [disabled]="!loginData.email || !loginData.password">Login</button>
+  <ion-grid>
+	<ion-row>
+		<ion-col col-10 offset-1>
+			<button full ion-button (click)="login()" [disabled]="!loginData.email || !loginData.password">Login</button>
+		</ion-col>
+	</ion-row>
+  </ion-grid>
   <br>
   <a href="#" (click)="signup()">Signup for an Account</a>
   <br><br>

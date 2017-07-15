@@ -42,3 +42,8 @@ ion-content {
 ion-app.md [margin] .scroll-content {
 	margin: 0;
 }
+
+ion-navbar.toolbar {
+	-webkit-flex-direction: row;
+   flex-direction: row;
+}
