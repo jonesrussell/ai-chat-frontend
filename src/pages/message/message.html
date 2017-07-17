@@ -1,39 +1,47 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Bot</ion-title>
-  </ion-navbar>
+	<ion-navbar>
+					<button ion-button menuToggle>
+						<ion-icon name="menu"></ion-icon>
+					</button>
+					<ion-title>Bot</ion-title>
+	</ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-	<button ion-item class="text" *ngFor="let message of messages | async" (click)="messageTapped($event, message)">
-	        {{message.body}}
-	</button>
-  </ion-list>
-    <form [formGroup]="chatForm" (ngSubmit)="logMessage(chatForm.value)">
+<ion-content margin>
+				<ion-list>
+					<button ion-item class="text" *ngFor="let message of messages | async" (click)="messageTapped($event, message)">
+						{{message.body}}
+					</button>
+				</ion-list>
 	<ion-grid>
+    			<form [formGroup]="chatForm" (ngSubmit)="logMessage(chatForm.value)">
 		<ion-row>
 			<ion-col col-8>
-			    <ion-textarea class="item-input-inset" formControlName="messageInput" placeholder="Message..."></ion-textarea>
+			    	<ion-textarea class="item-input-inset" formControlName="messageInput" placeholder="Message..."></ion-textarea>
 			</ion-col>
-    			<ion-col col-4>
-		          <button ion-button (click)="listen()">
-			  	<div>
-					<ion-icon name="mic"></ion-icon>
-				</div>
-    			  </button>
-
-			    <button ion-button><ion-icon name="send"></ion-icon></button>
+   			<ion-col col-2 item-left>
+					<button ion-button (click)="listen()">
+						<ion-icon name="mic"></ion-icon>
+					</button>
+			</ion-col>
+   			<ion-col col-2 item-right>
+					<button ion-button><ion-icon name="send"></ion-icon></button>
+			</ion-col>
+		</ion-row>
+			    </form>
+		<ion-row>
+			<ion-col col-10 item-left>
+				<ion-card>
+					<ion-card-header>
+						<span text-left>{{answer}}</span>
+					</ion-card-header>
+				</ion-card>
+			</ion-col>
+			<ion-col col-2 item-right>
+				<button color="secondary" ion-button (click)="sayText()">
+					<ion-icon name="megaphone"></ion-icon>
+				</button>
 			</ion-col>
 		</ion-row>
 	</ion-grid>
-    </form>
-    <button ion-button (click)="getPermission()">Get Mic Permission</button>
-    <ion-card>
-	    <ion-card-header>{{answer}}</ion-card-header>
-    </ion-card>
-    <button color="secondary" ion-button (click)="sayText()">Read Text</button>
 </ion-content>
