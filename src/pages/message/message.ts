@@ -58,9 +58,14 @@ export class MessagePage {
 	}
 
 	private _queryAI(message) {
-		let endpoint = this._env.aiEndpoint + '/messages';
+		let endpoint = this._env.aiEndpoint + this._env.messagePath;
+		console.log(endpoint);
 		let payload = JSON.stringify({ message: message });
-		let headers = new Headers({ 'Content-Type': 'application/json' });
+		console.log(payload);
+		let headers = new Headers({
+			'Content-Type': 'application/json',
+			'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOm51bGwsImV4cCI6Mjc5Mzk4NDQ3MCwiYXVkIjoiIiwic3ViIjoiIn0.2EHxpSNjZum9DIchthLARjOhlfCz0HTR9IJGJ7z5340'
+		});
 
 		this._http.post(endpoint, payload, { headers: headers })
 			.subscribe(data => {
@@ -68,6 +73,7 @@ export class MessagePage {
 				this.sayText();
 			}, error => {
 				console.log("http error in queryAI");
+				console.log(error);
 			});
 	}
 
