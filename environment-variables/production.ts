@@ -1,5 +1,6 @@
 export const prodVariables = {
 	environmentName: 'Production Environment',
 	ionicEnvName: 'prod',
-	aiEndpoint: 'http://192.168.2.238:3000'
+	aiEndpoint: 'https://ai-chat-legion.herokuapp.com',
+	messagePath: '/messages'
 };
