@@ -12,11 +12,9 @@ import { AngularFireAuth } from 'angularfire2/auth';
 	providers: [ShareService]
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
-
-  rootPage: any = LoginPage;
-
-  pages: Array<{title: string, component: any}>;
+	@ViewChild(Nav) nav: Nav;
+	rootPage: any = LoginPage;
+	pages: Array<{title: string, component: any}>;
 
 	constructor(
 		public platform: Platform,
@@ -24,15 +22,15 @@ export class MyApp {
 		public splashScreen: SplashScreen,
 		private _auth: AngularFireAuth,
 		private _share: ShareService) {
-			this._auth.authState.subscribe(auth => {
-				if (!auth) {
-					this.rootPage = LoginPage;
-				}
-				else {
-					this.rootPage = MessagePage;
-					_share.setUID(this._auth.auth.currentUser.uid);
-				}
-			});
+		this._auth.authState.subscribe(auth => {
+			if (!auth) {
+				this.rootPage = LoginPage;
+			}
+			else {
+				this.rootPage = MessagePage;
+				_share.setUID(this._auth.auth.currentUser.uid);
+			}
+		});
 
 		this.initializeApp();
 
@@ -41,20 +39,20 @@ export class MyApp {
 			{ title: 'Login', component: LoginPage },
 			{ title: 'Bot', component: MessagePage }
 		];
-  }
+	}
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
-  }
+	initializeApp() {
+		this.platform.ready().then(() => {
+			// Okay, so the platform is ready and our plugins are available.
+			// Here you can do any higher level native things you might need.
+			this.statusBar.styleDefault();
+			this.splashScreen.hide();
+		});
+	}
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
-  }
+	openPage(page) {
+		// Reset the content nav to have just this page
+		// we wouldn't want the back button to show in this scenario
+		this.nav.setRoot(page.component);
+	}
 }
