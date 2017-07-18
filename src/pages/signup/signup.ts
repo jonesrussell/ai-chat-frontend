@@ -14,11 +14,16 @@ export class SignupPage {
 		passwordRetyped: ''
 	};
 
-	constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private afAuth: AngularFireAuth) {
-		this.signupData.email = this.navParams.get('email');
-	}
+	constructor(
+		public navCtrl: NavController, 
+		public navParams: NavParams, 
+		private alertCtrl: AlertController, 
+		private _auth: AngularFireAuth) {
+			this.signupData.email = this.navParams.get('email');
+		}
+	;
 
-	signup() {
+	public signup(): void {
 		if(this.signupData.password !== this.signupData.passwordRetyped) {
 			let alert = this.alertCtrl.create({
 				title: 'Error',
@@ -30,7 +35,7 @@ export class SignupPage {
 		}
 
 		// Firebase Signup Code
-		this.afAuth.auth.createUserWithEmailAndPassword(this.signupData.email, this.signupData.password)
+		this._auth.auth.createUserWithEmailAndPassword(this.signupData.email, this.signupData.password)
 			.then(auth => {
 				// Could do something with the Auth-Response
 			})
@@ -49,5 +54,4 @@ export class SignupPage {
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad SignupPage');
 	}
-
 }

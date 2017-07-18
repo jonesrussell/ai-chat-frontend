@@ -40,23 +40,23 @@ export class MessagePage {
 			this.chatForm = _FB.group({ messageInput: [''] });
 	}
 
-	public logMessage(form) {
+	public logMessage(form): void {
 		let message = form.messageInput;
 		this._messageToDB(message);
 		this._queryAi(message);
 	}
 
-	private _messageToDB(message) {
+	private _messageToDB(message): void {
 		let messageRef = fb.database().ref('/messages/' + this.uid).push();
 		messageRef.set({ body: message });
 		this.chatForm.reset();
 	}
 
-	public messageTapped(event, message) {
+	public messageTapped(event, message): void {
 		this._queryAi(message.body);
 	}
 
-	private _queryAi(message) {
+	private _queryAi(message): void {
 		let endpoint = this._env.aiEndpoint + this._env.messagePath;
 		console.log(endpoint);
 		let payload = JSON.stringify({ message: message });
@@ -73,7 +73,8 @@ export class MessagePage {
 			}, error => {
 				console.log("http error in queryAi");
 				console.error(error);
-			});
+			})
+		;
 	}
 
 	ionViewCanEnter(): boolean {
