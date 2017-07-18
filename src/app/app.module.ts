@@ -18,45 +18,45 @@ import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import { TextToSpeech } from '@ionic-native/text-to-speech' 
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyBbA4W3GmHNeW4p-2n0rxEeU8EUFC-fQL0",
-  authDomain: "chat-test-b95fe.firebaseapp.com",
-  databaseURL: "https://chat-test-b95fe.firebaseio.com",
-  projectId: "chat-test-b95fe",
-  storageBucket: "chat-test-b95fe.appspot.com",
-  messagingSenderId: '2416292784'
+	apiKey: "AIzaSyBbA4W3GmHNeW4p-2n0rxEeU8EUFC-fQL0",
+	authDomain: "chat-test-b95fe.firebaseapp.com",
+	databaseURL: "https://chat-test-b95fe.firebaseio.com",
+	projectId: "chat-test-b95fe",
+	storageBucket: "chat-test-b95fe.appspot.com",
+	messagingSenderId: '2416292784'
 };
 
 @NgModule({
-  declarations: [
-    MyApp,
-    LoginPage,
-    SignupPage,
-    MessagePage
-  ],
-  imports: [
-    BrowserModule,
-    IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule,
-    HttpModule,
-    EnvironmentsModule
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    LoginPage,
-    SignupPage,
-    MessagePage
-  ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Facebook,
-    ShareService,
-    SpeechRecognition,
-    TextToSpeech
-  ]
+	declarations: [
+		MyApp,
+		LoginPage,
+		SignupPage,
+		MessagePage
+	],
+	imports: [
+		BrowserModule,
+		IonicModule.forRoot(MyApp),
+		AngularFireModule.initializeApp(firebaseConfig),
+		AngularFireDatabaseModule,
+		AngularFireAuthModule,
+		HttpModule,
+		EnvironmentsModule
+	],
+	bootstrap: [IonicApp],
+	entryComponents: [
+		MyApp,
+		LoginPage,
+		SignupPage,
+		MessagePage
+	],
+	providers: [
+		StatusBar,
+		SplashScreen,
+		{provide: ErrorHandler, useClass: IonicErrorHandler},
+		Facebook,
+		ShareService,
+		SpeechRecognition,
+		TextToSpeech
+	]
 })
-export class AppModule {}
+	export class AppModule {}
