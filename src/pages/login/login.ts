@@ -7,9 +7,10 @@ import * as firebase from 'firebase/app';
 import { ShareService } from '../../services/share';
 
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html'
+	selector: 'page-login',
+	templateUrl: 'login.html'
 })
+
 export class LoginPage {
 	loginData = {
 		email: '',
