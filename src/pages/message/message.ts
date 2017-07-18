@@ -8,11 +8,11 @@ import { ShareService } from '../../services/share';
 import { EnvVariables } from '../../../environment-variables/environment-variables.token';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import {  NgZone } from '@angular/core';
-import {TextToSpeech} from '@ionic-native/text-to-speech';
+import { TextToSpeech } from '@ionic-native/text-to-speech';
 
 @Component({
-  selector: 'page-message',
-  templateUrl: 'message.html'
+	selector: 'page-message',
+	templateUrl: 'message.html'
 })
 export class MessagePage {
 	chatForm: FormGroup;
@@ -44,7 +44,7 @@ export class MessagePage {
 	public logMessage(form) {
 		let message = form.messageInput;
 		this._messageToDB(message);
-		this._queryAI(message);
+		this._queryAi(message);
 	}
 
 	private _messageToDB(message) {
@@ -54,26 +54,26 @@ export class MessagePage {
 	}
 
 	public messageTapped(event, message) {
-		this._queryAI(message.body);
+		this._queryAi(message.body);
 	}
 
-	private _queryAI(message) {
+	private _queryAi(message) {
 		let endpoint = this._env.aiEndpoint + this._env.messagePath;
 		console.log(endpoint);
 		let payload = JSON.stringify({ message: message });
 		console.log(payload);
 		let headers = new Headers({
 			'Content-Type': 'application/json',
-			'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOm51bGwsImV4cCI6Mjc5Mzk4NDQ3MCwiYXVkIjoiIiwic3ViIjoiIn0.2EHxpSNjZum9DIchthLARjOhlfCz0HTR9IJGJ7z5340'
+			//'x-access-token': this._env.token
 		});
 
 		this._http.post(endpoint, payload, { headers: headers })
 			.subscribe(data => {
-				this.answer = JSON.parse(data["_body"]).text;
+				this.answer = JSON.parse(data["_body"]).answer;
 				this.sayText();
 			}, error => {
-				console.log("http error in queryAI");
-				console.log(error);
+				console.log("http error in queryAi");
+				console.error(error);
 			});
 	}
 
