@@ -1,14 +1,15 @@
 import { Component, Inject } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import * as fb from 'firebase/app';
 import { Http, Headers } from '@angular/http';
 import { ShareService } from '../../services/share';
 import { EnvVariables } from '../../../environment-variables/environment-variables.token';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
-import {  NgZone } from '@angular/core';
+import { NgZone } from '@angular/core';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
 	selector: 'page-message',
@@ -16,7 +17,8 @@ import { TextToSpeech } from '@ionic-native/text-to-speech';
 })
 export class MessagePage {
 	chatForm: FormGroup;
-	messages: FirebaseListObservable<any[]>;
+	messagesRef: AngularFireList<any>;
+	messages: Observable<any[]>;
 	answer: string;
 	uid: string;
 	matches: Array<String>;
@@ -32,11 +34,13 @@ export class MessagePage {
 		private zone: NgZone,
 		private _tts: TextToSpeech) {
 			this.uid = _share.getUID();
-			this.messages = db.list('/messages/' + this.uid,
+			this.messagesRef = db.list('/messages/' + this.uid, ref => ref.limitToLast(5));
+			this.messages = this.messagesRef.valueChanges();
+			/*this.messages = db.list('/messages/' + this.uid,
 				{ 
 					query: { limitToLast: 5 } 
 				}
-			);
+			);*/
 			this.chatForm = _FB.group({ messageInput: [''] });
 	}
 
@@ -63,12 +67,16 @@ export class MessagePage {
 		console.log(payload);
 		let headers = new Headers({
 			'Content-Type': 'application/json',
-			//'x-access-token': this._env.token
+			'x-access-token': this._env.token
 		});
 
 		this._http.post(endpoint, payload, { headers: headers })
 			.subscribe(data => {
-				this.answer = JSON.parse(data["_body"]).answer;
+				console.log(data["_body"]);
+				console.log(JSON.parse(data["_body"]));
+				this.answer = JSON.parse(data["_body"]).text;
+				console.log(this.answer);
+				console.log(this);				
 				this.sayText();
 			}, error => {
 				console.log("http error in queryAi");
