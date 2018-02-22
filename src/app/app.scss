@@ -28,6 +28,7 @@ ion-content {
 	top: 90px;
 	z-index: 100;
 	padding: 0;
+	max-width: 441px;
 
 	.scroll-content {
 		margin-top: 0px !important;
@@ -39,6 +40,11 @@ ion-content {
 	width: auto;
 }
 
+ion-app.md [margin] {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 ion-app.md [margin] .scroll-content {
 	margin: 0;
 }
@@ -46,4 +52,8 @@ ion-app.md [margin] .scroll-content {
 ion-navbar.toolbar {
 	-webkit-flex-direction: row;
    flex-direction: row;
+}
+
+page-login {
+	text-align: center;
 }
