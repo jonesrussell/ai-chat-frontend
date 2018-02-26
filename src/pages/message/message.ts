@@ -70,14 +70,15 @@ export class MessagePage {
 			'x-access-token': this._env.token
 		});
 
+		let _this = this;
 		this._http.post(endpoint, payload, { headers: headers })
 			.subscribe(data => {
 				console.log(data["_body"]);
 				console.log(JSON.parse(data["_body"]));
-				this.answer = JSON.parse(data["_body"]).text;
-				console.log(this.answer);
-				console.log(this);				
-				this.sayText();
+				console.log("text:", JSON.parse(data["_body"]).answer)
+				_this.answer = JSON.parse(data["_body"]).answer;
+				console.log(_this.answer);
+				_this.sayText();
 			}, error => {
 				console.log("http error in queryAi");
 				console.error(error);
